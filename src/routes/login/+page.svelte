@@ -3,6 +3,7 @@
 	import { toast } from '@zerodevx/svelte-toast';
 	import { Button, Heading } from 'flowbite-svelte';
 	import MetaTag from '../utils/MetaTag.svelte';
+	import { onMount } from 'svelte';
 
 	export let form;
 
@@ -18,21 +19,21 @@
 	const metaTitle: string = 'Login - IDEA-2 Project Officer-Staff Unity Council';
 	const subtitle: string = 'Login';
 
-	// const showToast = (text) => {
-	// 	toast.push(text, {
-	// 		theme: {
-	// 			'--toastColor': 'mintcream',
-	// 			'--toastBackground': 'rgba(72,187,120,0.9)',
-	// 			'--toastBarBackground': '#2F855A'
-	// 		}
-	// 	});
-	// };
+	const showToast = (text) => {
+		toast.push(text, {
+			theme: {
+				'--toastColor': 'mintcream',
+				'--toastBackground': 'rgba(72,187,120,0.9)',
+				'--toastBarBackground': '#2F855A'
+			}
+		});
+	};
 
-	// onMount(() => {
-	// 	if (form.message) {
-	// 		showToast(String(form?.message));
-	// 	}
-	// });
+	onMount(() => {
+		if (form && form.message) {
+			showToast(form?.message);
+		}
+	});
 </script>
 
 <MetaTag {path} {description} title={metaTitle} {subtitle} />

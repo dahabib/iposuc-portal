@@ -16,7 +16,7 @@
 	import Users from '../../data/users.json';
 
 	export let data;
-	console.log('getting data in dashboard/navbar: ', data);
+	const { name, role } = data.user;
 
 	export let fluid = true;
 	export let drawerHidden = false;
@@ -64,7 +64,7 @@
 			<Notifications />
 			<!-- <AppsMenu /> -->
 			<DarkMode />
-			<UserMenu data={data.user} />
+			<UserMenu {name} {role} />
 		</div>
 	</NavContainer>
 </Navbar>

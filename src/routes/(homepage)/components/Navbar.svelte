@@ -3,7 +3,8 @@
 	import UserMenu from '../../utils/widgets/UserMenu.svelte';
 	import Users from '../../data/users.json';
 	export let data;
-	console.log('data in homepage navbar: ', data);
+	const { name, role } = data;
+	console.log('data in homepage: ', data);
 </script>
 
 <Navbar
@@ -24,6 +25,6 @@
 	</NavUl>
 	<div class="py-4">
 		<DarkMode />
-		<UserMenu data="{data.user}}" />
+		<UserMenu {name} {role} />
 	</div>
 </Navbar>

@@ -70,6 +70,7 @@ import { getRegionByAdmin, getRegions } from '$lib/services/locationService';
 import { createUser } from '$lib/services/users';
 import { sendSingleSms } from '$lib/services/smsService';
 import type { CreateUserDataType } from '../../../../../types';
+import { toast } from '@zerodevx/svelte-toast';
 
 export const load = async ({ locals }) => {
 	const user = locals.user;
@@ -133,11 +134,19 @@ export const actions: Actions = {
 
 		const newUserNotification = `Welcome to IPOSUC Portal. 
 Password is ${password}. After login change password and update your profile. 
-Portal link: https://shorturl.at/xIFss`;
+Portal link: https://iposuc-portal.vercel.app/`;
 
 		try {
 			const response = await createUser(userData as CreateUserDataType);
-			const data = response.json();
+			const data = await response.json();
+			toast.push('User added successfully!', {
+				theme: {
+					'--toastColor': 'mintcream',
+					'--toastBackground': 'rgba(72,187,120,0.9)',
+					'--toastBarBackground': '#2F855A'
+				}
+			});
+
 			console.log('user response: ', data);
 			if (sendSms && response.ok) {
 				const sendMsg = await sendSingleSms(String(mobile), newUserNotification);

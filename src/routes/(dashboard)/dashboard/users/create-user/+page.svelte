@@ -33,7 +33,6 @@
 	const designationList = generateDropdown('bn');
 
 	if (Array.isArray(data.regions)) {
-		console.log('Its triggered in page: ', data.regions);
 		const regionsData = data.regions;
 		regions = regionsData?.map((x) => {
 			return { value: x.code, name: x.bn_name };

@@ -2,8 +2,8 @@
 	import { imagesPath } from '../../utils/variables';
 	import { Avatar, Dropdown, DropdownDivider, DropdownHeader, DropdownItem } from 'flowbite-svelte';
 
-	export let data;
-	console.log(data);
+	export let name;
+	export let role;
 	export let avatar: string = ''; // "neil-sims.png",
 </script>
 
@@ -12,8 +12,8 @@
 </button>
 <Dropdown placement="bottom-end">
 	<DropdownHeader>
-		<!-- <span class="block text-sm">{user.name}</span>
-		<span class="block truncate text-sm font-medium">{user.role}</span> -->
+		<span class="block text-sm">{name}</span>
+		<span class="block truncate text-sm font-medium">{role}</span>
 	</DropdownHeader>
 	<DropdownItem href="/dashboard/">Dashboard</DropdownItem>
 	<DropdownItem href="/dashboard/profile">Profile</DropdownItem>
