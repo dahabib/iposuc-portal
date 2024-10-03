@@ -6,17 +6,17 @@ const config = {
 		'./node_modules/flowbite-svelte/**/*.{html,js,svelte,ts}'
 	],
 
-	theme: {
-		extend: {}
-	},
-
-	plugins: [require('flowbite/plugin')({charts:true})],
+	plugins: [require('flowbite/plugin')({ charts: true })],
 	darkMode: 'class',
 	theme: {
 		fontFamily: {
 			sans: ['Inter', ...defaultTheme.fontFamily.sans]
 		},
 		extend: {
+			fontFamily: {
+				ador: ['AdorNoirrit', 'sans-serif'],
+				hind: ['Hind+Siliguri', 'sans-serif']
+			},
 			colors: {
 				// flowbite-svelte
 				primary: {

@@ -1,0 +1,279 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id                String             @id @default(cuid())
+  name              String
+  mobile            String             @unique
+  password          String
+  role              Role
+  avatar            String?
+  posts             Post[]
+  comments          Comment[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  profile           Profile?
+  userSubscriptions UserSubscription[]
+  payments          Payment[]
+  Invoice           Invoice[]
+  Transaction       Transaction[]
+}
+
+model Profile {
+  id               String      @id @default(cuid())
+  nameEn           String
+  nameBn           String?
+  designation      Designation @relation(fields: [designationId], references: [id])
+  designationId    String
+  dateOfBirth      DateTime?
+  fathersName      String?
+  fathersNameBn    String?
+  education        String?
+  mothersName      String?
+  mothersNameBn    String?
+  joiningDate      DateTime?
+  presentAddress   String?
+  permanentAddress String?
+  file             Files?      @relation(fields: [fileId], references: [id])
+  fileId           String?
+  email            String?     @unique
+  bio              String?
+  user             User        @relation(fields: [userId], references: [id])
+  userId           String      @unique
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  region     Region?   @relation(fields: [regionId], references: [code])
+  regionId   String?
+  district   District? @relation(fields: [districtId], references: [id])
+  districtId String?
+  upazila    Upazila?  @relation(fields: [upazilaId], references: [id])
+  upazilaId  String?
+}
+
+model Files {
+  id        String    @id @default(uuid())
+  fileName  String
+  path      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  profiles  Profile[]
+}
+
+model Designation {
+  id        String    @id @default(cuid())
+  name      Positions @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  rofiles Profile[]
+}
+
+enum Positions {
+  ASSISTANT_DIRECTOR
+  ASSISTANT_PROGRAMMER
+  ASSISTANT_MAINTENANCE_ENGINEER
+  AO_PS
+  DEPUTY_ASSISTANT_DIRECTOR
+  DATA_ENTRY_CONTROL_SUPERVISOR
+  OFFICE_ASSISTANT_CUM_COMPUTER_OPERATOR
+  ASSISTANT_STORE_KEEPER
+  DATA_ENTRY_OPERATOR
+  SCANNING_AND_EQUIPMENT_MAINTENANCE_OPERATOR
+  PACKING_SUPERVISOR
+  QUALITY_ASSURANCE_INCHARGE
+  QUALITY_ASSURANCE_OPERATOR
+  MACHINE_SUPERVISOR
+  MACHINE_OPERATOR
+  SCANNING_OPERATOR
+  OFFICE_ASSISTANT
+  DESPASS_OPERATOR
+  COUNTER
+  DRIVER
+  ELECTRICIAN
+}
+
+model Post {
+  id        String     @id @default(cuid())
+  title     String
+  content   String
+  tags      Tag[] // @relation(references: [id], through: "PostTag")
+  image     String?
+  author    User       @relation(fields: [authorId], references: [id])
+  authorId  String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  comments  Comment[]
+  audience  Audience
+  status    PostStatus @default(DRAFT)
+  PostTag   PostTag[]
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    String
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Tag {
+  id      String    @id @default(cuid())
+  name    String    @unique
+  posts   Post[] // @relation(references: [id], through: "PostTag")
+  PostTag PostTag[]
+}
+
+model SubscriptionPlan {
+  id                String             @id @default(cuid())
+  name              String
+  type              SubscriptionType
+  price             Float
+  description       String?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  userSubscriptions UserSubscription[]
+}
+
+model Invoice {
+  id                 String            @id @default(cuid())
+  title              String
+  userId             String
+  user               User              @relation(fields: [userId], references: [id])
+  amount             Float
+  dueDate            DateTime
+  paid               Boolean           @default(false)
+  paidDate           DateTime?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  UserSubscription   UserSubscription? @relation(fields: [userSubscriptionId], references: [id])
+  userSubscriptionId String?
+}
+
+model UserSubscription {
+  id               String           @id @default(cuid())
+  userId           String
+  user             User             @relation(fields: [userId], references: [id])
+  planId           String
+  subscriptionPlan SubscriptionPlan @relation(fields: [planId], references: [id])
+  startDate        DateTime
+  endDate          DateTime
+  isActive         Boolean          @default(true)
+  invoices         Invoice[]
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+}
+
+model Payment {
+  id           String        @id @default(cuid())
+  user         User          @relation(fields: [userId], references: [id])
+  userId       String
+  amount       Float
+  paymentDate  DateTime      @default(now())
+  description  String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  transactions Transaction[]
+}
+
+model Transaction {
+  id            String   @id @default(cuid())
+  transactionId String // ID provided by the payment gateway
+  method        String?
+  gateway       String?
+  user          User     @relation(fields: [userId], references: [id])
+  userId        String
+  payment       Payment  @relation(fields: [paymentId], references: [id])
+  paymentId     String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+enum SubscriptionType {
+  MONTHLY
+  OCCASIONAL
+}
+
+model Region {
+  id        String     @id
+  code      String     @unique()
+  name      String
+  bn_name   String
+  lat       Float
+  long      Float
+  districts District[]
+  profiles  Profile[]
+}
+
+model Division {
+  id       String     @id @default(cuid())
+  name     String
+  bn_name  String
+  lat      Float
+  long     Float
+  District District[]
+}
+
+model District {
+  id         String    @id @default(cuid())
+  division   Division  @relation(fields: [divisionId], references: [id])
+  divisionId String
+  code       String    @unique
+  name       String
+  bn_name    String
+  lat        Float
+  long       Float
+  region     Region    @relation(fields: [regionId], references: [code])
+  regionId   String
+  upazila    Upazila[]
+  Profile    Profile[]
+}
+
+model Upazila {
+  id         String    @id @default(cuid())
+  code       String
+  name       String
+  bn_name    String
+  lat        Float
+  long       Float
+  district   District  @relation(fields: [districtId], references: [code])
+  districtId String
+  Profile    Profile[]
+}
+
+model PostTag {
+  postId String
+  tagId  String
+
+  post Post @relation(fields: [postId], references: [id])
+  tag  Tag  @relation(fields: [tagId], references: [id])
+
+  @@id([postId, tagId])
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  USER
+}
+
+enum Audience {
+  ADMIN
+  USER
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  REJECTED
+}

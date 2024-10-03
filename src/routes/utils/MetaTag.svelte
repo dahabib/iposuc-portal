@@ -29,12 +29,4 @@ openGraph={{
   ],
   siteName: 'Flowbite Svelte Admin Dashboard',
 }}
-twitter={{
-  handle: '@shinokada',
-  cardType: 'summary_large_image',
-  title: `${title}`,
-  description: `${description}`,
-  image: imgsrc,
-  imageAlt: `${title}`
-}}
 />
