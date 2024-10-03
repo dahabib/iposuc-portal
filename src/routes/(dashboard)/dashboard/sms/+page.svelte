@@ -1,10 +1,18 @@
-<script>
+<script lang="ts">
 	import { enhance } from '$app/forms';
+	import MetaTag from '../../../utils/MetaTag.svelte';
+
+	const path: string = '/dashboard/sms';
+	const description: string = 'Send SMS - IPOSUC';
+	const title: string = 'Send SMS - IPOSUC';
+	const subtitle: string = 'Send SMS';
 
 	export let form;
 	export let data;
 	console.log('data in sms page: ', data);
 </script>
+
+<MetaTag {path} {description} {title} {subtitle} />
 
 <div class="flex min-h-screen flex-col justify-center bg-gray-100 py-12 sm:px-6 lg:px-8">
 	<div class="sm:mx-auto sm:w-full sm:max-w-md">

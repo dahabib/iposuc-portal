@@ -3,8 +3,8 @@
 	import Card from '../widgets/Card.svelte';
 
 	const inputs: { label: string; type: InputType; placeholder: string }[] = [
-		{ label: 'First Name', type: 'text', placeholder: 'Bonnie' },
-		{ label: 'Last Name', type: 'text', placeholder: 'Green' },
+		{ label: 'Full Name (English)', type: 'text', placeholder: 'Bonnie Islam' },
+		{ label: 'Full Name (Bangla)', type: 'text', placeholder: 'Green' },
 		{ label: 'Country', type: 'text', placeholder: 'United States' },
 		{ label: 'City', type: 'text', placeholder: 'e.g. San Francisco' },
 		{ label: 'Address', type: 'text', placeholder: 'e.g. California' },
