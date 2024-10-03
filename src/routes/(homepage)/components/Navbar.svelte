@@ -4,7 +4,6 @@
 	import Users from '../../data/users.json';
 	export let data;
 	const { name, role } = data;
-	console.log('data in homepage: ', data);
 </script>
 
 <Navbar

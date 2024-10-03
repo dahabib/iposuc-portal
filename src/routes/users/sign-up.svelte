@@ -27,9 +27,9 @@
 		console.log(data);
 	};
 
-	const path: string = '/authentication/sign-up';
-	const description: string = 'Sign up example - Flowbite Svelte Admin Dashboard';
-	const metaTitle: string = 'Flowbite Svelte Admin Dashboard - Sign up';
+	const path: string = '/dashboard/users/sign-up';
+	const description: string = 'Sign up - IPOSUC Admin Dashboard';
+	const metaTitle: string = 'IPOSUC Admin Dashboard - Sign up';
 	const subtitle: string = 'Sign up';
 </script>
 

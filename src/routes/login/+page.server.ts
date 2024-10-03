@@ -21,6 +21,7 @@ import { Role } from '@prisma/client';
 export const actions: Actions = {
 	login: async ({ cookies, request }) => {
 		const data = await request.formData();
+		console.log('data in login page.server.ts :', data);
 		const mobile = data.get('mobile');
 		const password = data.get('password');
 

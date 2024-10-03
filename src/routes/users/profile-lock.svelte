@@ -3,7 +3,7 @@
 	import { Input, Label } from 'flowbite-svelte';
 	import Users from '../data/users.json';
 	import { avatarPath, imagesPath } from '../utils/variables';
-  import MetaTag from '../utils/MetaTag.svelte';
+	import MetaTag from '../utils/MetaTag.svelte';
 	const onSubmit = (e: Event) => {
 		const formData = new FormData(e.target as HTMLFormElement);
 		console.log(formData);
@@ -15,10 +15,10 @@
 		name: Users[0].name
 	};
 
-	const path: string = '/authentication/profile-lock';
-  const description: string = 'Profile lock example - Flowbite Svelte Admin Dashboard';
-	const metaTitle: string = 'Flowbite Svelte Admin Dashboard - Profile lock';
-  const subtitle: string = 'Profile lock';
+	const path: string = '/dashboard/users/profile-lock';
+	const description: string = 'Profile lock - IPOSUC Admin Dashboard';
+	const metaTitle: string = 'IPOSUC Admin Dashboard - Profile lock';
+	const subtitle: string = 'Profile lock';
 </script>
 
 <MetaTag {path} {description} title={metaTitle} {subtitle} />
