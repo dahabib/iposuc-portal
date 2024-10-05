@@ -16,7 +16,9 @@
 <div class="overflow-hidden lg:flex">
 	<Sidebar bind:drawerHidden />
 	<div class="relative h-full w-full overflow-y-auto pt-[70px] lg:ml-64">
-		<slot />
+		<div class="min-h-[calc(100vh-250px)]">
+			<slot />
+		</div>
 		<Footer />
 	</div>
 </div>

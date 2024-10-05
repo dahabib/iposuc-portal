@@ -5,23 +5,9 @@ import { setAuthenticationCookies } from '$lib/cookies';
 import { findByMobile } from '$lib/services/users';
 import { Role } from '@prisma/client';
 
-// export const load = async ({ locals }) => {
-// 	const user = locals.user;
-// 	if (locals.user) {
-// 		if (locals.user.role === Role.USER) {
-// 			throw redirect(302, '/');
-// 		} else {
-// 			throw redirect(302, '/dashboard');
-// 		}
-// 	}
-
-// 	return { user };
-// };
-
 export const actions: Actions = {
 	login: async ({ cookies, request }) => {
 		const data = await request.formData();
-		console.log('data in login page.server.ts :', data);
 		const mobile = data.get('mobile');
 		const password = data.get('password');
 
@@ -36,7 +22,7 @@ export const actions: Actions = {
 		// Check if user exists
 		if (!user) {
 			return fail(404, {
-				incorrect: true,
+				missing: true,
 				message: 'No user found with this mobile number.'
 			});
 		}
@@ -48,6 +34,14 @@ export const actions: Actions = {
 				incorrect: true,
 				message: 'Invalid password.'
 			});
+		}
+
+		// Check if the user have changed default password
+		if (user.isDefaultPassword) {
+			setAuthenticationCookies(cookies, user.id);
+
+			// Redirect to password reset page
+			throw redirect(303, '/users/update-password');
 		}
 
 		// Set authentication cookies (JWT and refresh token)

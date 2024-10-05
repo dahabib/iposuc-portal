@@ -15,6 +15,7 @@ model User {
   password          String
   role              Role
   avatar            String?
+  isDefaultPassword Boolean            @default(true)
   posts             Post[]
   comments          Comment[]
   createdAt         DateTime           @default(now())
@@ -30,7 +31,7 @@ model Profile {
   id               String      @id @default(cuid())
   nameEn           String
   nameBn           String?
-  designation      Designation @relation(fields: [designationId], references: [id])
+  designation      Designation @relation(fields: [designationId], references: [id], onDelete: Cascade)
   designationId    String
   dateOfBirth      DateTime?
   fathersName      String?
@@ -45,7 +46,7 @@ model Profile {
   fileId           String?
   email            String?     @unique
   bio              String?
-  user             User        @relation(fields: [userId], references: [id])
+  user             User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId           String      @unique
   createdAt        DateTime    @default(now())
   updatedAt        DateTime    @updatedAt
@@ -73,7 +74,7 @@ model Designation {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
-  rofiles Profile[]
+  profiles Profile[]
 }
 
 enum Positions {
@@ -128,10 +129,10 @@ model Comment {
 }
 
 model Tag {
-  id      String    @id @default(cuid())
-  name    String    @unique
-  posts   Post[] // @relation(references: [id], through: "PostTag")
-  PostTag PostTag[]
+  id       String    @id @default(cuid())
+  name     String    @unique
+  posts    Post[] // @relation(references: [id], through: "PostTag")
+  postTags PostTag[]
 }
 
 model SubscriptionPlan {
@@ -187,16 +188,16 @@ model Payment {
 }
 
 model Transaction {
-  id            String   @id @default(cuid())
-  transactionId String // ID provided by the payment gateway
-  method        String?
-  gateway       String?
-  user          User     @relation(fields: [userId], references: [id])
-  userId        String
-  payment       Payment  @relation(fields: [paymentId], references: [id])
-  paymentId     String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id        String   @id @default(cuid())
+  reference String // ID provided by the payment gateway
+  method    String?
+  gateway   String?
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  payment   Payment  @relation(fields: [paymentId], references: [id])
+  paymentId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum SubscriptionType {

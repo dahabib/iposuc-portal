@@ -13,10 +13,9 @@
 		Search
 	} from 'flowbite-svelte';
 	import { ChevronDownOutline } from 'flowbite-svelte-icons';
-	import Users from '../../data/users.json';
 
 	export let data;
-	const { name, role } = data.user;
+	const { name, role, avatar } = data.user;
 
 	export let fluid = true;
 	export let drawerHidden = false;
@@ -64,7 +63,7 @@
 			<Notifications />
 			<!-- <AppsMenu /> -->
 			<DarkMode />
-			<UserMenu {name} {role} />
+			<UserMenu {name} {role} {avatar} />
 		</div>
 	</NavContainer>
 </Navbar>

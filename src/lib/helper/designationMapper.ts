@@ -22,7 +22,7 @@ const positionNamesEnglish = {
 	ELECTRICIAN: 'Electrician'
 };
 
-const positionNamesBengali = {
+export const positionNamesBengali = {
 	ASSISTANT_DIRECTOR: 'সহকারী পরিচালক',
 	ASSISTANT_PROGRAMMER: 'সহকারী প্রোগ্রামার',
 	ASSISTANT_MAINTENANCE_ENGINEER: 'অ্যাসিস্টেন্ট মেইনটেন্যান্স ইঞ্জিনিয়ার',

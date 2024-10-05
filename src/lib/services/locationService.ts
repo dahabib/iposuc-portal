@@ -11,11 +11,11 @@ export const getRegions = async () => {
 	});
 	// console.log('regions in server: ', region);
 
-	// return region || null;
-	return Response.json(
-		JSON.stringify({ regions, success: true, message: 'Regions fetched successfully' }),
-		{ status: 200 }
-	);
+	return regions || null;
+	// return Response.json(
+	// 	JSON.stringify({ regions, success: true, message: 'Regions fetched successfully' }),
+	// 	{ status: 200 }
+	// );
 };
 
 // Get single region based on userId

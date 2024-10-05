@@ -1,8 +1,11 @@
 <script lang="ts">
-	import { Avatar, Button, Card, Heading } from 'flowbite-svelte';
+	import { enhance } from '$app/forms';
+	import { Avatar, Button, Card, Heading, Fileupload, Helper, Input } from 'flowbite-svelte';
 	import { UploadSolid } from 'flowbite-svelte-icons';
 
-	export let src: string;
+	export let user: string;
+	const { avatar, id } = user;
+	console.log('avatar:', avatar, id);
 </script>
 
 <Card
@@ -10,23 +13,24 @@
 	class="block shadow-sm sm:flex sm:space-x-4 sm:py-6 xl:block xl:space-x-0 2xl:flex 2xl:space-x-4"
 	horizontal
 >
-	<Avatar {src} class="mb-4 h-28 w-28 rounded-lg sm:mb-0 xl:mb-4 2xl:mb-0" size="none" rounded />
+	<Avatar {avatar} class="mb-4 h-28 w-28 rounded-lg sm:mb-0 xl:mb-4 2xl:mb-0" size="none" rounded />
 
 	<div class="py-0.5">
 		<Heading tag="h3" class="text-xl">Profile picture</Heading>
-		<p class="mb-4 mt-1 pt-px text-sm">JPG, GIF or PNG. Max size of 800K</p>
-		<div class="flex items-center space-x-4">
-			<Button size="sm" class="px-3"
-				><UploadSolid size="sm" class="-ms-1 me-2" /> Upload picture</Button
+		<Helper class="mb-4 mt-1 pt-px text-sm">PNG, JPG /JPEG (Size: 200x200px)</Helper>
+		<form
+			method="post"
+			action="?/uploadAvatar"
+			enctype="multipart/form-data"
+			use:enhance
+			class="flex items-center space-x-4"
+		>
+			<Fileupload size="sm" class="px-3" name="avatar" accept="image/png, image/jpeg, image/jpg"
+				><UploadSolid size="sm" class="-ms-1 me-2" />
+				Select Photo</Fileupload
 			>
-			<Button size="sm" class="px-3" color="alternative">Delete</Button>
-		</div>
+			<Input type="hidden" name="userId" value={id} />
+			<Button type="submit" size="sm" class="px-3" color="alternative">Upload</Button>
+		</form>
 	</div>
 </Card>
-
-<!--
-@component
-[Go to docs](https://flowbite-svelte-admin-dashboard.vercel.app/)
-## Props
-@prop export let src: string;
--->

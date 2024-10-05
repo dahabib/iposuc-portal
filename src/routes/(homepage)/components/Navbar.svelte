@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { DarkMode, NavBrand, NavHamburger, NavLi, NavUl, Navbar } from 'flowbite-svelte';
 	import UserMenu from '../../utils/widgets/UserMenu.svelte';
-	import Users from '../../data/users.json';
 	export let data;
-	const { name, role } = data;
+	const { name, role, avatar } = data;
 </script>
 
 <Navbar
@@ -24,6 +23,6 @@
 	</NavUl>
 	<div class="py-4">
 		<DarkMode />
-		<UserMenu {name} {role} />
+		<UserMenu {name} {role} {avatar} />
 	</div>
 </Navbar>

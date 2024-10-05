@@ -13,16 +13,11 @@
 		AngleDownOutline,
 		AngleUpOutline,
 		ClipboardListSolid,
-		CogOutline,
 		FileChartBarSolid,
 		GithubSolid,
 		LayersSolid,
 		LifeSaverSolid,
-		LockSolid,
-		WandMagicSparklesOutline,
 		ChartPieOutline,
-		RectangleListSolid,
-		TableColumnSolid,
 		UsersGroupSolid,
 		BookSolid
 	} from 'flowbite-svelte-icons';

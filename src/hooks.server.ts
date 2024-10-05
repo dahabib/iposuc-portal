@@ -4,7 +4,6 @@ import { prisma } from '$lib/prisma';
 
 export const handle = async ({ event, resolve }) => {
 	const authCookie = event.cookies.get('auth_token');
-	console.log('auth_token: ', authCookie);
 
 	// Ensure the cookie exists before proceeding
 	if (authCookie) {
@@ -20,7 +19,8 @@ export const handle = async ({ event, resolve }) => {
 					id: true,
 					mobile: true,
 					role: true,
-					name: true
+					name: true,
+					avatar: true
 				}
 			});
 

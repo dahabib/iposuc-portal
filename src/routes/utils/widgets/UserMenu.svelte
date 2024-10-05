@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { imagesPath } from '../../utils/variables';
 	import { Avatar, Dropdown, DropdownDivider, DropdownHeader, DropdownItem } from 'flowbite-svelte';
 
 	export let name;
 	export let role;
-	export let avatar: string = ''; // "neil-sims.png",
+	export let avatar: string = '';
 </script>
 
 <button class="ms-3 rounded-full ring-gray-400 focus:ring-4 dark:ring-gray-600">
-	<Avatar size="sm" src={imagesPath(avatar, 'users')} tabindex="0" />
+	<Avatar size="sm" src={avatar} tabindex="0" alt={name} />
 </button>
 <Dropdown placement="bottom-end">
 	<DropdownHeader>

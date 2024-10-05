@@ -49,7 +49,7 @@ export const createUser = async (user: CreateUserDataType) => {
 };
 
 // Get user by id
-export const findById = async (id: string): Promise<Partial<User> | null> => {
+export const findUserById = async (id: string): Promise<Partial<User> | null> => {
 	return await prisma.user.findUnique({
 		where: {
 			id: id
@@ -57,7 +57,8 @@ export const findById = async (id: string): Promise<Partial<User> | null> => {
 		select: {
 			name: true,
 			mobile: true,
-			role: true
+			role: true,
+			password: true
 		}
 	});
 };
@@ -67,8 +68,43 @@ export const findByMobile = async (mobile: string): Promise<User | null> => {
 	return await prisma.user.findUnique({ where: { mobile } });
 };
 
+// Update user password
+
+export const updatePassword = async (userId: string, password: string) => {
+	const response = await prisma.user.update({
+		where: { id: userId },
+		data: {
+			password,
+			isDefaultPassword: false
+		},
+		select: {
+			id: true
+		}
+	});
+
+	return Response.json(
+		{ data: response, success: true, message: 'Password updated successfully!' },
+		{ status: 200 }
+	);
+};
+
+// Update user avatar
+export const updateAvatar = async (userId: string, avatar: string) => {
+	await prisma.user.update({
+		where: { id: userId },
+		data: {
+			avatar
+		},
+		select: {
+			id: true
+		}
+	});
+
+	return Response.json({ success: true, message: 'Avatar updated successfully!' }, { status: 200 });
+};
+
 // Check if user with privided mobile number already exists
-export const validateEmail = async (mobile: string): Promise<boolean> => {
+export const validateMobile = async (mobile: string): Promise<boolean> => {
 	const user = await prisma.user.findUnique({ where: { mobile } });
 
 	if (user) return false;

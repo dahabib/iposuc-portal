@@ -13,6 +13,8 @@
 	const description: string = 'Settings page - IPOSUC';
 	const title: string = 'IPOSUC - Settings';
 	const subtitle: string = 'Settings';
+	export let data;
+	const { user } = data;
 </script>
 
 <MetaTag {path} {description} {title} {subtitle} />
@@ -34,7 +36,7 @@
 			</Heading>
 		</div>
 		<div class="col-span-full space-y-4 xl:col-auto">
-			<ProfilePicture src={imagesPath(Users[4].avatar, 'users')} />
+			<ProfilePicture {user} src={imagesPath(Users[4].avatar, 'users')} />
 			<SocialAccounts />
 		</div>
 		<div class="col-span-2 space-y-4">

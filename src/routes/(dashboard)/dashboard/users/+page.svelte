@@ -17,20 +17,19 @@
 		PlusOutline,
 		TrashBinSolid
 	} from 'flowbite-svelte-icons';
-	import Users from '../../../data/users.json';
-	import { imagesPath } from '../../../utils/variables';
 
 	import User from './User.svelte';
 	import Delete from './Delete.svelte';
 	import MetaTag from '../../../utils/MetaTag.svelte';
+	import type { PageData } from './$types';
 
-	export let data;
-	console.log('data in user page: ', data);
+	export let data: PageData;
 
-	let openUser: boolean = false; // modal control
-	let openDelete: boolean = false; // modal control
+	let openUser: boolean = false;
+	let openDelete: boolean = false;
 
-	let current_user: any = {};
+	let selected_user: any = {};
+
 	const path: string = '/dashboard/users';
 	const description: string = 'IPOSUC Admin Dashboard';
 	const title: string = 'IPOSUC Admin Dashboard - Users';
@@ -83,7 +82,7 @@
 				<Button
 					size="sm"
 					class="gap-2 whitespace-nowrap px-3"
-					on:click={() => ((current_user = {}), (openUser = true))}
+					on:click={() => ((selected_user = {}), (openUser = true))}
 				>
 					<PlusOutline size="sm" />Add user
 				</Button>
@@ -96,39 +95,45 @@
 	<Table>
 		<TableHead class="border-y border-gray-200 bg-gray-100 dark:border-gray-700">
 			<TableHeadCell class="w-4 p-4"><Checkbox /></TableHeadCell>
-			{#each ['Name', 'Biography', 'Position', 'Country', 'Status', 'Actions'] as title}
+			{#each ['Name', 'Designation', 'Posting', 'Role', 'Status', 'Actions'] as title}
 				<TableHeadCell class="p-4 font-medium">{title}</TableHeadCell>
 			{/each}
 		</TableHead>
 		<TableBody>
-			{#each Users as user}
+			{#each data?.users as user}
 				<TableBodyRow class="text-base">
 					<TableBodyCell class="w-4 p-4"><Checkbox /></TableBodyCell>
 					<TableBodyCell class="mr-12 flex items-center space-x-6 whitespace-nowrap p-4">
-						<Avatar src={imagesPath(user.avatar, 'users')} />
+						<Avatar src={user?.avatar} alt={user.name} />
 						<div class="text-sm font-normal text-gray-500 dark:text-gray-400">
 							<div class="text-base font-semibold text-gray-900 dark:text-white">{user.name}</div>
-							<div class="text-sm font-normal text-gray-500 dark:text-gray-400">{user.email}</div>
+							<div class="text-sm font-normal text-gray-500 dark:text-gray-400">{user.mobile}</div>
 						</div>
 					</TableBodyCell>
 					<TableBodyCell
 						class="max-w-sm overflow-hidden truncate p-4 text-base font-normal text-gray-500 dark:text-gray-400 xl:max-w-xs"
 					>
-						{user.biography}
+						{user?.designation ?? ''}
 					</TableBodyCell>
-					<TableBodyCell class="p-4">{user.position}</TableBodyCell>
-					<TableBodyCell class="p-4">{user.country}</TableBodyCell>
+					<TableBodyCell class="p-4"
+						>{user?.region +
+							(user?.district ? ', ' + user.district : '') +
+							(user?.upazila ? ', ' + user?.upazila : '')}</TableBodyCell
+					>
+					<TableBodyCell class="p-4">{user.role}</TableBodyCell>
 					<TableBodyCell class="p-4 font-normal">
 						<div class="flex items-center gap-2">
-							<Indicator color={user.status === 'Active' ? 'green' : 'red'} />
-							{user.status}
+							<Indicator color={'Active' === 'Active' ? 'green' : 'red'} />
+							{user?.member.getDate()}
 						</div>
 					</TableBodyCell>
 					<TableBodyCell class="space-x-2 p-4">
 						<Button
 							size="sm"
 							class="gap-2 px-3"
-							on:click={() => ((current_user = user), (openUser = true))}
+							on:click={() => (
+								(selected_user = user), user?.role === 'SUPER_ADMIN', (openUser = true)
+							)}
 						>
 							<EditOutline size="sm" /> Edit user
 						</Button>
@@ -136,7 +141,9 @@
 							color="red"
 							size="sm"
 							class="gap-2 px-3"
-							on:click={() => ((current_user = user), (openDelete = true))}
+							on:click={() => (
+								(selected_user = user), user?.role === 'SUPER_ADMIN', (openDelete = true)
+							)}
 						>
 							<TrashBinSolid size="sm" /> Delete user
 						</Button>
@@ -149,5 +156,5 @@
 
 <!-- Modals -->
 
-<User bind:open={openUser} data={current_user} />
-<Delete bind:open={openDelete} />
+<User bind:open={openUser} data={selected_user} />
+<Delete bind:open={openDelete} data={selected_user.id} />
