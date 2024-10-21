@@ -2,11 +2,11 @@ import { variables } from '$lib/variables';
 
 // Send Single SMS
 export const sendSingleSms = async (mobile: string, msg: string) => {
-	const url = 'http://bulksmsbd.net/api/smsapi';
+	const url = `${variables.bulk_sms_api_url}/smsapi`;
 	const apiKey = variables.bulk_sms_api_key;
 	const data = {
 		api_key: apiKey,
-		senderid: '8809604902431',
+		senderid: variables.bulk_sms_api_default_sender,
 		number: mobile,
 		message: msg
 	};
@@ -37,7 +37,7 @@ export const sendSingleSms = async (mobile: string, msg: string) => {
 // Check SMS balance
 export const checkBalance = async () => {
 	const apiKey = variables.bulk_sms_api_key;
-	const url = 'http://bulksmsbd.net/api/getBalanceApi?api_key=';
+	const url = `${variables.bulk_sms_api_url}/getBalanceApi?api_key=`;
 
 	try {
 		const response = await fetch(url + apiKey);
