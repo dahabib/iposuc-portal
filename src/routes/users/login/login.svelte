@@ -2,6 +2,7 @@
 	import { Label, Input } from 'flowbite-svelte';
 	import SignIn from '../../utils/authentication/SignIn.svelte';
 	import MetaTag from '../../utils/MetaTag.svelte';
+	import { EyeOutline, EyeSlashOutline } from 'flowbite-svelte-icons';
 	let title = 'Login';
 	let site = {
 		name: 'IDEA-2 Project Officer-Staff Unity Council',
@@ -9,6 +10,7 @@
 		link: '/',
 		imgAlt: 'IPOSUC Logo'
 	};
+	let showPassword = false;
 	let rememberMe = false;
 	let lostPassword = false;
 	let createAccount = false;
@@ -62,12 +64,24 @@
 	<div>
 		<Label for="password" class="mb-2 dark:text-white">Password</Label>
 		<Input
-			type="password"
+			type={showPassword ? 'text' : 'password'}
 			name="password"
 			id="password"
 			placeholder="••••••••"
 			required
 			class="border outline-none dark:border-gray-600 dark:bg-gray-700"
-		/>
+		>
+			<button
+				slot="right"
+				on:click={() => (showPassword = !showPassword)}
+				class="pointer-events-auto"
+			>
+				{#if showPassword}
+					<EyeOutline class="h-6 w-6" />
+				{:else}
+					<EyeSlashOutline class="h-6 w-6" />
+				{/if}
+			</button>
+		</Input>
 	</div>
 </SignIn>

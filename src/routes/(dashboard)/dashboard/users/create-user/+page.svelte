@@ -8,6 +8,7 @@
 		Heading,
 		Button,
 		Checkbox,
+		Helper,
 		FloatingLabelInput
 	} from 'flowbite-svelte';
 	import { generateDropdown } from '$lib/helper/designationMapper';
@@ -82,9 +83,13 @@
 					{/if}
 				</Label>
 
-				<FloatingLabelInput style="outlined" name="password" type="password">
+				<FloatingLabelInput class="font-ador" style="outlined" name="password" type="password">
 					পাসওয়ার্ড
 				</FloatingLabelInput>
+				<!-- Password is optional during creation, default password will be set "Ecs@1234" -->
+				<Helper class="mt-2 text-sm">
+					Default password will be set <span>Ecs@1234</span> if not provided.
+				</Helper>
 
 				{#if regions}
 					<Label class="font-AdorNoirrit">

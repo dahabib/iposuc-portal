@@ -3,9 +3,8 @@
 	import { Avatar, Button, Card, Heading, Fileupload, Helper, Input } from 'flowbite-svelte';
 	import { UploadSolid } from 'flowbite-svelte-icons';
 
-	export let user: string;
-	const { avatar, id } = user;
-	console.log('avatar:', avatar, id);
+	export let data;
+	const { avatar, id } = data;
 </script>
 
 <Card
@@ -13,7 +12,12 @@
 	class="block shadow-sm sm:flex sm:space-x-4 sm:py-6 xl:block xl:space-x-0 2xl:flex 2xl:space-x-4"
 	horizontal
 >
-	<Avatar {avatar} class="mb-4 h-28 w-28 rounded-lg sm:mb-0 xl:mb-4 2xl:mb-0" size="none" rounded />
+	<Avatar
+		src={avatar}
+		class="mb-4 h-28 w-28 rounded-lg sm:mb-0 xl:mb-4 2xl:mb-0"
+		size="none"
+		rounded
+	/>
 
 	<div class="py-0.5">
 		<Heading tag="h3" class="text-xl">Profile picture</Heading>

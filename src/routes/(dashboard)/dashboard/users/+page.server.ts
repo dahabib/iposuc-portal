@@ -43,6 +43,7 @@ export const load: PageServerLoad = async () => {
 				mobile: user.mobile,
 				member: user.createdAt,
 				avatar: user.avatar,
+				defaultPassword: user.isDefaultPassword,
 				designation: user.profile?.designation.name
 					? positionNamesBengali[user.profile?.designation.name]
 					: '',

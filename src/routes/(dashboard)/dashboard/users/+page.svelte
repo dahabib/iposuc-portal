@@ -95,7 +95,7 @@
 	<Table>
 		<TableHead class="border-y border-gray-200 bg-gray-100 dark:border-gray-700">
 			<TableHeadCell class="w-4 p-4"><Checkbox /></TableHeadCell>
-			{#each ['Name', 'Designation', 'Posting', 'Role', 'Status', 'Actions'] as title}
+			{#each ['Name', 'Designation', 'Posting', 'Role', 'Password Updated', 'Actions'] as title}
 				<TableHeadCell class="p-4 font-medium">{title}</TableHeadCell>
 			{/each}
 		</TableHead>
@@ -123,8 +123,7 @@
 					<TableBodyCell class="p-4">{user.role}</TableBodyCell>
 					<TableBodyCell class="p-4 font-normal">
 						<div class="flex items-center gap-2">
-							<Indicator color={'Active' === 'Active' ? 'green' : 'red'} />
-							{user?.member.getDate()}
+							<Indicator color={user?.defaultPassword === false ? 'green' : 'red'} />
 						</div>
 					</TableBodyCell>
 					<TableBodyCell class="space-x-2 p-4">

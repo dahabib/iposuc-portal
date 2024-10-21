@@ -4,18 +4,33 @@
 
 	const inputs: { label: string; type: InputType; placeholder: string }[] = [
 		{ label: 'Full Name (English)', type: 'text', placeholder: 'Bonnie Islam' },
-		{ label: 'Full Name (Bangla)', type: 'text', placeholder: 'Green' },
-		{ label: 'Country', type: 'text', placeholder: 'United States' },
-		{ label: 'City', type: 'text', placeholder: 'e.g. San Francisco' },
-		{ label: 'Address', type: 'text', placeholder: 'e.g. California' },
-		{ label: 'Email', type: 'text', placeholder: 'example@company.com' },
-		{ label: 'Phone Number', type: 'text', placeholder: 'e.g. +(12)3456 789' },
-		{ label: 'Birthday', type: 'text', placeholder: '15/08/1980' },
-		{ label: 'Organization', type: 'text', placeholder: 'Company Name' },
-		{ label: 'Role', type: 'text', placeholder: 'Svelte Developer' },
-		{ label: 'Department', type: 'text', placeholder: 'Development' },
-		{ label: 'Zip/postal code', type: 'text', placeholder: '123456' }
+		{ label: 'Full Name (Bangla)', type: 'text', placeholder: 'বহ্নি ইসলাম' },
+		{ label: 'Designation', type: 'text', placeholder: 'Data Entry Operator' },
+		{ label: 'Email', type: 'email', placeholder: 'myname@example.com' },
+		{ label: 'Date of birth', type: 'date', placeholder: '1900-11-28' },
+		{ label: 'Education', type: 'text', placeholder: 'Select your last Education' },
+		{ label: 'Fathers Name (English)', type: 'text', placeholder: 'Fathers Name' },
+		{ label: 'Fathers Name (Bangla)', type: 'text', placeholder: 'পিতার নাম' },
+		{ label: 'Mothers Name (English)', type: 'text', placeholder: 'Mothers Name' },
+		{ label: 'Mothers Name (Bangla)', type: 'text', placeholder: 'মাতার নাম' },
+		{
+			label: 'Present Address',
+			type: 'text',
+			placeholder:
+				'House No: 23, Village: New Villate, Post Office: PostOffice - 1010, Upazila: Tetulia, District: Chuadanga'
+		},
+		{
+			label: 'Permanent Address',
+			type: 'text',
+			placeholder:
+				'House No: 23, Village: New Villate, Post Office: PostOffice - 1010, Upazila: Tetulia, District: Chuadanga'
+		},
+		{ label: 'Joining Date', type: 'date', placeholder: '2016-03-01' },
+		{ label: 'Files', type: 'file', placeholder: 'Select your file' }
 	];
+
+	export let data;
+	console.log('data in generalInfo: ', data);
 </script>
 
 <Card title="General Information" class="-mt-px max-w-none">
