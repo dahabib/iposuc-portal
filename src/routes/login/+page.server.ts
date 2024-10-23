@@ -4,6 +4,17 @@ import bcrypt from 'bcryptjs';
 import { setAuthenticationCookies } from '$lib/cookies';
 import { findByMobile } from '$lib/services/users';
 import { Role } from '@prisma/client';
+import { toast } from '@zerodevx/svelte-toast';
+
+const showToast = (text) => {
+	toast.push(text, {
+		theme: {
+			'--toastColor': 'mintcream',
+			'--toastBackground': 'rgba(72,187,120,0.9)',
+			'--toastBarBackground': '#2F855A'
+		}
+	});
+};
 
 export const actions: Actions = {
 	login: async ({ cookies, request }) => {
@@ -30,6 +41,7 @@ export const actions: Actions = {
 		// Validate password
 		const isPasswordValid = await bcrypt.compare(String(password), user.password);
 		if (!isPasswordValid) {
+			showToast('Invalid Password!');
 			return fail(400, {
 				incorrect: true,
 				message: 'Invalid password.'
