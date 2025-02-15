@@ -5,7 +5,7 @@ FROM node:19.7-alpine AS build
 WORKDIR /usr/src/app
 
 # Install Yarn globally
-RUN npm install -g yarn --unsafe-perm
+RUN npm install -g yarn
 
 # Copy package.json and yarn.lock
 COPY package.json yarn.lock ./
@@ -14,7 +14,7 @@ COPY package.json yarn.lock ./
 RUN yarn cache clean
 
 # Install dependencies using Yarn
-RUN yarn install --frozen-lockfile --network-timeout 1000000 || (cat /usr/local/share/.cache/yarn/v6/*.log && exit 1)
+RUN yarn install --frozen-lockfile
 
 # Copy the rest of the application code
 COPY . .
