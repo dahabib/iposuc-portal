@@ -56,4 +56,4 @@ jobs:
           server: https://delwar.xyz
           app: 'iposuc'
           token: '${{ secrets.APP_TOKEN }}'
-          image: 'ghcr.io/khromov/self-hosted-sveltekit-demo:main'
+          image: 'ghcr.io/dahabib/iposuc-portal:main'
