@@ -1,24 +1,17 @@
 # Stage 1: Build stage
-FROM node:19.7-alpine AS sk-build
-
-# Set environment variables
-ARG TZ=Asia/Dhaka
-ARG PUBLIC_HELLO
+FROM node:19.7-alpine AS build
 
 # Set the working directory
 WORKDIR /usr/src/app
 
-# Install dependencies and set timezone
-RUN apk --no-cache add curl tzdata && \
-    cp /usr/share/zoneinfo/$TZ /etc/localtime && \
-    echo $TZ > /etc/timezone
-
-
-# Copy package.json and yarn.lock first to leverage Docker cache
+# Copy package.json and yarn.lock
 COPY package.json yarn.lock ./
 
+# Clear Yarn cache (optional)
+RUN yarn cache clean
+
 # Install dependencies using Yarn
-RUN yarn install --frozen-lockfile
+RUN yarn install --frozen-lockfile --network-timeout 1000000 || (cat /usr/local/share/.cache/yarn/v6/*.log && exit 1)
 
 # Copy the rest of the application code
 COPY . .
@@ -29,26 +22,17 @@ RUN yarn build
 # Stage 2: Production stage
 FROM node:19.7-alpine
 
-# Set environment variables
-ARG TZ=Asia/Dhaka
-
 # Set the working directory
 WORKDIR /usr/src/app
 
-# Install dependencies and set timezone
-RUN apk --no-cache add curl tzdata && \
-    cp /usr/share/zoneinfo/$TZ /etc/localtime && \
-    echo $TZ > /etc/timezone
+# Copy package.json and yarn.lock
+COPY package.json yarn.lock ./
 
-
-# Copy package.json and yarn.lock from build stage
-COPY --from=sk-build /usr/src/app/package.json /usr/src/app/yarn.lock ./
-
-# Install only production dependencies using Yarn
-RUN yarn install --production --frozen-lockfile
+# Install only production dependencies
+RUN yarn install --frozen-lockfile --production
 
 # Copy the built application from the build stage
-COPY --from=sk-build /usr/src/app/build ./build
+COPY --from=build /usr/src/app/build ./build
 
 # Expose the application port
 EXPOSE 3000
