@@ -1,41 +1,27 @@
-# Stage 1: Build stage
-FROM node:19.7-alpine AS build
-
-# Set the working directory
+FROM node:19.7-alpine AS sk-build
 WORKDIR /usr/src/app
 
-# Copy package.json and yarn.lock
-COPY package.json yarn.lock ./
+ARG TZ=Asia/Dhaka
+ARG PUBLIC_HELLO
 
-# Clear Yarn cache (optional)
-RUN yarn cache clean
+COPY . /usr/src/app
+RUN apk --no-cache add curl tzdata
+RUN cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN npm install
+RUN npm run build
 
-# Install dependencies using Yarn
-RUN yarn install --frozen-lockfile
-
-# Copy the rest of the application code
-COPY . .
-
-# Build the application
-RUN yarn build
-
-# Stage 2: Production stage
 FROM node:19.7-alpine
-
-# Set the working directory
 WORKDIR /usr/src/app
 
-# Copy package.json and yarn.lock
-COPY package.json yarn.lock ./
+ARG TZ=Asia/Dhaka
+RUN apk --no-cache add curl tzdata
+RUN cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# Install only production dependencies
-RUN yarn install --frozen-lockfile --production
+COPY --from=sk-build /usr/src/app/package.json /usr/src/app/package.json
+COPY --from=sk-build /usr/src/app/package-lock.json /usr/src/app/package-lock.json
+RUN npm i --only=production
 
-# Copy the built application from the build stage
-COPY --from=build /usr/src/app/build ./build
+COPY --from=sk-build /usr/src/app/build /usr/src/app/build
 
-# Expose the application port
 EXPOSE 3000
-
-# Command to run the application
 CMD ["node", "build/index.js"]
