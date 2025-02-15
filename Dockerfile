@@ -13,8 +13,6 @@ RUN apk --no-cache add curl tzdata && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ > /etc/timezone
 
-# Install Yarn globally
-RUN npm install -g yarn --unsafe-perm
 
 # Copy package.json and yarn.lock first to leverage Docker cache
 COPY package.json yarn.lock ./
@@ -42,8 +40,6 @@ RUN apk --no-cache add curl tzdata && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ > /etc/timezone
 
-# Install Yarn globally (if not already included in the base image)
-RUN npm install -g yarn
 
 # Copy package.json and yarn.lock from build stage
 COPY --from=sk-build /usr/src/app/package.json /usr/src/app/yarn.lock ./
