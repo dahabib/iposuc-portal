@@ -13,8 +13,10 @@ RUN apk --no-cache add curl tzdata && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ > /etc/timezone
 
-# Install Yarn globally (if not already included in the base image)
-RUN npm install -g yarn
+# Install Yarn using the official script
+RUN npm install -g corepack && \
+    corepack enable && \
+    corepack prepare yarn@stable --activate
 
 # Copy package.json and yarn.lock first to leverage Docker cache
 COPY package.json yarn.lock ./
