@@ -3,7 +3,7 @@
 	"version": "0.1.1",
 	"description": "IDEA-2 Project Officer-Staff Unity Council",
 	"homepage": "",
-	"private": true,
+	"private": false,
 	"license": "MIT",
 	"scripts": {
 		"dev": "vite dev",
