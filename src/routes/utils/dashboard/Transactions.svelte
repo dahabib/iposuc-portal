@@ -32,6 +32,9 @@
 		'Payment method',
 		'Status'
 	];
+
+	type PaymentState = 'completed' | 'cancelled' | 'inprogress' | 'inreview';
+
 	const data: [string, string, string, string, number, CreditCard['state']][] = [
 		['Payment from Bonnie Green', 'Apr 23 ,2021', '$2300', '0047568936', 475, 'completed'],
 		['Payment refund to #00910', 'Apr 23 ,2021', '-$670', '0078568936', 924, 'completed'],
@@ -44,9 +47,28 @@
 		['Payment from Alphabet', 'Mar 23 ,2021', '$11,436', '00836143841', 772, 'inprogress'],
 		['Payment from Bonnie Green', 'Mar 23 ,2021', '$560', '0031568935', 123, 'completed']
 	];
+
+	let filterBy: string[] = ['completed', 'cancelled', 'inprogress', 'inreview'];
+
+	let tableData = [];
+	$: tableData = data.filter((item) => console.log(item[5]));
+	console.log(tableData);
+
+	const checkedStyle = 'accent-primary-600';
+
+	const handleChange = (event: Event) => {
+		const target = event.target as HTMLInputElement; // Explicitly cast
+		const value = target.value as PaymentState;
+
+		if (target.checked) {
+			if (!filterBy.includes(value)) filterBy = [...filterBy, value];
+		} else {
+			filterBy = filterBy.filter((status) => status !== value);
+		}
+	};
 </script>
 
-<Card size="xl" class="shadow-sm max-w-none">
+<Card size="xl" class="max-w-none shadow-sm">
 	<div class="items-center justify-between lg:flex">
 		<div class="mb-4 mt-px lg:mb-0">
 			<Heading tag="h3" class="-ml-0.25 mb-2 text-xl font-semibold dark:text-white">
@@ -63,10 +85,27 @@
 					<ChevronDownOutline size="lg" />
 				</Button>
 				<Dropdown class="w-44 space-y-3 p-3 text-sm" placement="bottom-start">
-					<li><Checkbox class="accent-primary-600">Completed (56)</Checkbox></li>
-					<li><Checkbox checked>Cancelled (56)</Checkbox></li>
-					<li><Checkbox class="accent-primary-600">In progress (56)</Checkbox></li>
-					<li><Checkbox checked>In review (97)</Checkbox></li>
+					<li>
+						<!-- <Checkbox checked value="completed" on:change={(value) => handleChange(value)}
+							>Completed (56)</Checkbox
+						> -->
+						<Checkbox checked value="completed" on:change={handleChange}>Completed</Checkbox>
+					</li>
+					<li>
+						<Checkbox checked value="cancelled" on:change={(value) => handleChange(value)}
+							>Cancelled (56)</Checkbox
+						>
+					</li>
+					<li>
+						<Checkbox checked value="inprogress" on:change={(value) => handleChange(value)}
+							>In progress (56)</Checkbox
+						>
+					</li>
+					<li>
+						<Checkbox checked value="inreview" on:change={(value) => handleChange(value)}
+							>In review (97)</Checkbox
+						>
+					</li>
 				</Dropdown>
 			</div>
 			<div class="flex items-center space-x-4">

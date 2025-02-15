@@ -20,7 +20,7 @@ export const getRegions = async () => {
 
 // Get single region based on userId
 export const getRegionByAdmin = async (userId: string) => {
-	const region = await prisma.user.findUnique({
+	const result = await prisma.user.findUnique({
 		where: {
 			id: userId
 		},
@@ -33,7 +33,7 @@ export const getRegionByAdmin = async (userId: string) => {
 		}
 	});
 
-	return region?.profile?.region || null;
+	return result?.profile?.region || null;
 	// return Response.json(
 	// 	JSON.stringify({
 	// 		region: region?.profile?.region,

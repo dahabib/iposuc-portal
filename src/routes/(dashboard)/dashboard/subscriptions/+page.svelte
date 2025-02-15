@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, type ComponentType } from 'svelte';
-	import { Heading } from 'flowbite-svelte';
+	import { Heading, P } from 'flowbite-svelte';
 	import { sineIn } from 'svelte/easing';
 	import MetaTag from '../../../utils/MetaTag.svelte';
 	import Product from '../posts/Post.svelte';
@@ -25,7 +25,6 @@
 
 	export let data;
 	const { subscriptions } = data;
-	console.log(data);
 </script>
 
 <MetaTag {path} {description} {title} {subtitle} />
@@ -33,6 +32,6 @@
 <main class="space-y-2 p-4">
 	<Heading tag="h3">Subscriptions</Heading>
 	{#if !subscriptions.length}
-		<p>No subscriptions found!</p>
+		<P>No subscriptions found!</P>
 	{/if}
 </main>

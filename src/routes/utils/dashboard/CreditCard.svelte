@@ -1,6 +1,5 @@
 <script lang="ts">
 	export let number: number;
-
 	// random assignment to issuer type
 	$: type = number % 2 ? 'visa' : 'master';
 </script>

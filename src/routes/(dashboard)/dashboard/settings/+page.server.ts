@@ -10,12 +10,16 @@ export const actions: Actions = {
 
 		const upload = await uploadAvatar(file);
 
+		let uploadResponse;
+
 		if (upload.success) {
 			const update = await updateAvatar(userId, upload.imageUrl);
-			const data = await update.json();
-			console.log(data);
+			uploadResponse = await update.json();
 		}
 
-		return { success: true };
+		return Response.json(
+			{ data: uploadResponse },
+			{ status: 200, statusText: 'Profile picture updated!' }
+		);
 	}
 } satisfies Actions;

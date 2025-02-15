@@ -30,9 +30,6 @@ export const uploadAvatar = async (image) => {
 
 		const imageUrl = responseData.data.url;
 
-		// Use the imageUrl as needed, such as storing it in your database
-		console.log('Image uploaded successfully: ', imageUrl);
-
 		// Redirect to a success page or return success status
 		return { success: true, imageUrl };
 	} catch (err) {
