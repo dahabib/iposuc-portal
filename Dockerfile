@@ -1,27 +1,44 @@
-FROM node:19.7-alpine AS sk-build
+# Stage 1: Build stage
+FROM node:19.7-alpine AS build
+
+# Set the working directory
 WORKDIR /usr/src/app
 
-ARG TZ=Asia/Dhaka
-ARG PUBLIC_HELLO
+# Copy package.json and package-lock.json
+COPY package.json package-lock.json ./
 
-COPY . /usr/src/app
-RUN apk --no-cache add curl tzdata
-RUN cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+# Clear npm cache (optional)
+RUN npm cache clean --force
+
+# Install dependencies using npm
 RUN npm install
+
+# Copy the rest of the application code
+COPY . .
+
+# Build the application
 RUN npm run build
 
+# Stage 2: Production stage
 FROM node:19.7-alpine
+
+# Set the working directory
 WORKDIR /usr/src/app
 
-ARG TZ=Asia/Dhaka
-RUN apk --no-cache add curl tzdata
-RUN cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+# Copy package.json and package-lock.json from build stage
+COPY --from=build /usr/src/app/package.json /usr/src/app/package-lock.json ./
 
-COPY --from=sk-build /usr/src/app/package.json /usr/src/app/package.json
-COPY --from=sk-build /usr/src/app/package-lock.json /usr/src/app/package-lock.json
-RUN npm i --only=production
+# Clear npm cache (optional)
+RUN npm cache clean --force
 
-COPY --from=sk-build /usr/src/app/build /usr/src/app/build
+# Install only production dependencies
+RUN npm install --only=production
 
+# Copy the built application from the build stage
+COPY --from=build /usr/src/app/build ./build
+
+# Expose the application port
 EXPOSE 3000
+
+# Command to run the application
 CMD ["node", "build/index.js"]
