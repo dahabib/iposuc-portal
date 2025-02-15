@@ -13,7 +13,6 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    #if: contains(github.event.head_commit.message, 'web')
 
     steps:
       - name: Checkout Repository
@@ -24,6 +23,15 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+
+      - name: Cache Docker layers
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: buildx-${{ runner.os }}-${{ github.run_id }}-${{ github.sha }}
+          restore-keys: |
+            buildx-${{ runner.os }}-
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -42,14 +50,19 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          platforms: linux/amd64 #, linux/arm64 <-- Add for ARM support
+          platforms: linux/amd64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            PUBLIC_HELLO=world
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
 
-      # Uncomment and replace with your server
+      - name: Save Docker layers to cache
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
       - name: Deploy on CapRover
         uses: caprover/deploy-from-github@v1.1.2
         with:
