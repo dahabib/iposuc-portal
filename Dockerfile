@@ -1,5 +1,5 @@
 # Stage 1: Build stage
-FROM node:19.7-alpine AS build
+FROM node:20.11.0-alpine AS build
 
 # Set the working directory
 WORKDIR /usr/src/app
@@ -11,7 +11,7 @@ COPY package.json package-lock.json ./
 RUN npm cache clean --force
 
 # Install dependencies using npm
-RUN npm install
+RUN npm install --verbose
 
 # Copy the rest of the application code
 COPY . .
@@ -20,7 +20,7 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Production stage
-FROM node:19.7-alpine
+FROM node:20.11.0-alpine
 
 # Set the working directory
 WORKDIR /usr/src/app
