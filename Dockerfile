@@ -1,17 +1,17 @@
 # Stage 1: Build stage
 FROM node:20.11.0-alpine AS build
 
+# Install dependencies for npm packages that require compilation
+RUN apk add --no-cache python3 make g++ build-base
+
 # Set the working directory
 WORKDIR /usr/src/app
 
 # Copy package.json and package-lock.json
 COPY package.json package-lock.json ./
 
-# Clear npm cache (optional)
-RUN npm cache clean --force
-
-# Install dependencies using npm
-RUN npm install --verbose
+# Install dependencies using npm ci for clean install
+RUN npm ci --verbose
 
 # Copy the rest of the application code
 COPY . .
@@ -28,11 +28,8 @@ WORKDIR /usr/src/app
 # Copy package.json and package-lock.json from build stage
 COPY --from=build /usr/src/app/package.json /usr/src/app/package-lock.json ./
 
-# Clear npm cache (optional)
-RUN npm cache clean --force
-
-# Install only production dependencies
-RUN npm install --only=production
+# Install only production dependencies using npm ci
+RUN npm ci --only=production --verbose
 
 # Copy the built application from the build stage
 COPY --from=build /usr/src/app/build ./build
